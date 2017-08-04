@@ -1,0 +1,786 @@
+@header-dark:#D46A6A;  @background-dark:#F8F4F4;
+@header-light:#283039; @background-light:#F8F9F9;
+//#6BCBCA
+
+.dark() {
+	@theme:"dark"; @header-color:@header-dark; @background-color:@background-dark;
+	.colortheorem(@num) { color:hsl(mod(@num * 0.618033988749895, 1.0) * 360, 0.9, 0.62); }
+	.colortheorembg(@num) { background-color:hsl(mod(@num * 0.618033988749895, 1.0) * 360, 0.9, 0.62); }
+}
+
+.light() {
+	@theme:"light"; @header-color:@header-light; @background-color:@background-light;
+	.colortheorem(@num) { color:hsl(mod(@num * 0.618033988749895, 1.0) * 360, 0.82, 0.4); }
+	.colortheorembg(@num) { background-color:hsl(mod(@num * 0.618033988749895, 1.0) * 360, 0.82, 0.4); }
+}
+
+/*& when (@theme = "dark") {
+	opacity:0.4;
+}*/
+
+.light(); // N'y pense même pas !
+
+/* coleur */
+.generate-color(40);
+
+.generate-color(@n, @i: 0) when (@i <= @n) {
+	&.bg-c@{i} {
+		.colortheorembg(@i);
+	}
+
+	.generate-color(@n, (@i + 1));
+}
+
+.noselect() {
+	-webkit-touch-callout:none;
+	-webkit-user-select:none;
+	-khtml-user-select:none;
+	-moz-user-select:none;
+	-ms-user-select:none;
+	user-select: none;
+}
+
+.noselect {
+	.noselect();
+}
+
+@font-face {
+	font-family:"my_roboto_font";
+	src:url("font/Roboto-Regular-webfont.eot");
+	src:url("font/Roboto-Regular-webfont.eot?#iefix") format("embedded-opentype"),
+		url("font/Roboto-Regular-webfont.woff") format("woff"),
+		url("font/Roboto-Regular-webfont.ttf") format("truetype"),
+		url("font/Roboto-Regular-webfont.svg#robotoregular") format("svg");
+	font-weight:normal;
+	font-style:normal;
+}
+
+html.debug {
+	&.ChromeMobileAD-visible {
+		div#header, div.chatcontent {
+			background-color:blue !important;
+		}
+	}
+
+	&.ChromeMobileAD-hidden {
+		div#header, div.chatcontent {
+			background-color:red !important;
+		}
+	}
+}
+
+body {
+	font-family:"my_roboto_font", sans-serif;
+	color:contrast(@background-color);
+	background:@background-color;
+	line-height:19px;
+	font-size:14px;
+	padding:0;
+	margin:0;
+	/** ps : ne pas mettre height:100%; **/
+}
+
+a {
+	color:#00AE54;
+	cursor:pointer;
+	text-decoration:none;
+	transition:all 0.32s ease 0.1s;
+	&:active {
+		color:#E84C3D;
+	}
+	&:hover {
+		color:#E84C3D;
+		text-decoration:underline;
+	}
+}
+
+input {
+	font-family:"my_roboto_font", sans-serif;
+	font-size:14px;
+}
+
+div#header {
+	width:100%;
+	background:@header-color;
+	border-bottom:3px solid #B1D1EB;
+	overflow:hidden;
+	position:relative;
+
+	.noselect();
+
+	div#logo {
+		color:white;
+		cursor:pointer;
+		margin:5px 0 0;
+
+		& > * {	margin:0; text-align:center; }
+		h1 {
+			font-weight:normal;
+			font-size:16px;
+			color:#9ACBE7;
+
+			span, sup {
+				overflow:hidden;
+				//border:1px solid white;
+				display:inline-block;
+				position:relative;
+				text-align:center;
+				height:20px;
+
+				&::before {
+					background:@header-color;
+					opacity:0;
+					transition:.72s;
+					display:inline-block;
+					position:absolute;
+					left:0;
+				}
+				&:hover::before {
+					opacity:1;
+				}
+			}
+
+			span#equa_a {
+				vertical-align:bottom;
+				border:none;
+				width:20px;
+
+				&::before {
+					content:"a";
+					width:20px;
+				}
+			}
+
+			sup {
+				line-height:12px;
+				width:12px;
+				height:12px;
+
+				&::before {
+					content:"2";
+					width:15px;
+				}
+			}
+		}
+		p {
+			font-size:14px;
+
+			&::before, &::after { content:" ------ "; }
+			a:hover {
+				color:#00ae54;
+			}
+		}
+	}
+
+	div#submenu {
+		padding:0 5px;
+		div {
+			display:inline-block;
+			padding:0 2px;
+			float:right;
+		}
+		div#changelog {
+			a { color:white; }
+			float:none;
+		}
+	}
+}
+
+body > div.content {
+	background:darken(@background-color, 4%);
+	overflow:hidden;
+	padding:0;
+	width:100%;
+	max-width:100%;
+}
+
+/* Début du CSS sur le chat */
+div.content div.chatcontent {
+	background:darken(@background-color, 2%);
+	//display:inline-block;
+	font-size:14px;
+	padding:5px;
+
+	&#chat {
+		position:relative;
+		margin:0 auto;
+	}
+
+	div#minimap {
+		display:inline-block;
+		position:absolute;
+		top:5px;
+		right:4px;
+		overflow:hidden;
+		height:100%;
+
+		.noselect();
+		div#chat_mini {
+			position:absolute;
+			-webkit-transform-origin:0 0;
+			transform-origin:0 0;
+			display:inline-block; /* Etrange, pour le width:100% */
+			padding:0;
+
+			.nomini {
+				display:none;
+			}
+
+			div#focus_window {
+				background-color:rgba(0, 0, 0, .12);
+				position:absolute;
+				cursor:default;
+				width:100%;
+				left:0;
+				top:0;
+			}
+
+			div#messages_chat_mini {
+				margin:0;
+			}
+		}
+	}
+
+	div#messages_chat {
+		overflow:hidden;
+		margin-bottom:5px;
+	}
+
+	div.chatdisplay {
+		background:@background-color;
+		word-wrap:break-word;
+		position:relative;
+		overflow:hidden;
+		& > div.pm {
+			border-bottom:1px solid darken(@background-color, 8%);
+			border-top:1px solid lighten(@background-color, 32%);
+			word-wrap:break-word;
+			position:relative;
+			color:#a0aeae;
+			margin:0;
+
+			& > div.pseudo, & > div.text {
+				display:inline-block;
+				vertical-align:top;
+				padding:2px 5px;
+			}
+
+			& > div.pseudo {
+				font-style:normal;
+				overflow:hidden;
+				max-height:19px;
+				cursor:pointer;
+				width:100px;
+				&::after {
+					content:" : ";
+				}
+				.noselect();
+			}
+
+			& > div.text {
+				transition:max-height 1s ease 0s;
+				white-space:pre-line;
+				overflow:hidden;
+				min-height:12px;
+				max-height:144px;
+
+				&:hover {
+					overflow:auto;
+				}
+
+				//BB-Code (markdown)
+				/*a.img {
+					background:darken(@background-color, 16%);
+					padding:2px 6px 2px 28px;
+					vertical-align:middle;
+					display:inline-block;
+					text-decoration:none;
+					position:relative;
+					border-radius:3px;
+					line-height:13px;
+					font-size:11px;
+					cursor:pointer;
+					color:inherit;
+					margin:0 2px;
+					outline:none;
+					&:hover { background:darken(@background-color, 8%); }
+
+					img {
+						transition:all 0.38s ease 0.18s, z-index 0.01s ease 0.56s;
+						vertical-align:middle;
+						pointer-events:none;
+						position:absolute;
+						line-height:19px;
+						max-height:19px;
+						max-width:19px;text-indent: -9999px;
+						cursor:pointer;
+						margin:auto;
+						float:left;
+						z-index:1;
+						left:6px;
+						top:2px;
+						bottom:2px;
+					}
+					&.above img {
+						top:inherit;
+					}
+					&.prev img {
+						left:inherit;
+					}
+
+					&.ev:hover {
+						img {
+							vertical-align:top;
+							max-height:200px;
+							max-width:200px;
+							z-index:2;
+							top:30px;
+							transition:all 0.38s ease 0.18s, z-index 0.01s;
+						}
+						&.above img {
+							top:inherit;
+							bottom:30px !important;
+						}
+						&.prev img {
+							right:0 !important;
+						}
+					}
+
+					&::before {
+						background:rgba(255,255,255,0.12);
+						text-align:center;
+						position:absolute;
+						border:1px solid rgba(0,0,0,0.12);
+						content:" ";
+						height:17px;
+						width:17px;
+						left:6px;
+						top:2px;
+						bottom:2px;
+					}
+
+					&::after {
+						content:" " attr(data-file);
+						vertical-align:middle;
+						line-height:19px;
+					}
+				}*/
+			}
+
+			& > font {
+				display:inline-block;
+				position:absolute;
+				text-align:right;
+				cursor:pointer;
+				height:13px;
+				right:5px;
+				bottom:0;
+			}
+
+			& > font > a {
+				line-height:13px;
+				color:inherit;
+				transition:none;
+				text-decoration:none;
+				font-size:9px;
+				padding:0 2px;
+				opacity:0.8;
+				float:left;
+
+				&.d {
+					opacity:0;
+					.noselect();
+
+					&.now {
+						opacity:0.8;
+					}
+				}
+				&.e::before {
+					content:"✎";
+					font-weight:0;
+				}
+			}
+
+			&:hover > font > a {
+				background-color:lighten(@background-color, 32%);
+				border-radius:2px;
+				opacity:1;
+
+				&.d {
+					//display:inherit;
+				}
+			}
+
+			&.info {
+				font-size:9px;
+				line-height:13px;
+				& > div.pseudo, & > div.text {
+					padding:1px 5px;
+				}
+			}
+
+			&.statusbar {
+				line-height:13px;
+				border-top:none;
+				font-size:9px;
+				& > div.pseudo, & > div.text {
+					border-top:none;
+				}
+				& > div.text {
+					a {
+						color:white;
+						padding:0 4px;
+						cursor:pointer;
+						margin-left:4px;
+						border-radius:2px;
+						&:first-child {
+							margin-left:0;
+						}
+					}
+					a.unknow {
+						background-color:#a0aeae;
+					}
+				}
+			}
+
+			&.nobody {
+				font-size:12px;
+				line-height:17px;
+				text-align:center;
+
+				& > div.pseudo { display:none; }
+				& > div.text {
+					padding:1px 5px;
+					width:100%;
+				}
+
+				&.prev {
+					transition:all 0.32s ease 0.1s;
+					border:1px solid darken(@background-color, 8%);
+					color:#00AE54;
+					cursor:pointer;
+					//margin-bottom:3px;
+					padding:2px 6px;
+
+					&:hover {
+						border:1px solid darken(@background-color, 16%);
+						span { text-decoration:underline; }
+						color:#E84C3D
+					}
+				}
+			}
+
+			/* coleur */
+			.generate-color(40);
+
+			.generate-color(@n, @i: 0) when (@i <= @n) {
+				&.c@{i} {
+					.colortheorem(@i);
+				}
+
+				.generate-color(@n, (@i + 1));
+			}
+		}
+
+		&#input_chat {
+			background-color:lighten(@background-color, 6%);
+			margin:0px;
+			width:100%;
+
+			outline:1px solid darken(@background-color, 8%);
+			&:hover { outline:1px solid darken(@background-color, 16%); }
+
+			& > div.pm {
+				border:none;
+				cursor:text;
+
+				& > div.pseudo, & > div.text {
+					padding:4px 5px;
+				}
+
+				& > div.pseudo {
+					cursor:pointer;
+				}
+
+				div#inputHTML {
+					&:focus { outline:none; }
+
+					min-height:19px;
+					border-left:1px solid darken(@background-color, 8%);
+					padding-left:4px;
+					overflow:hidden;
+					margin:0;
+
+					&.editing {
+						background-color:#FBF2D9;
+					}
+				}
+			}
+
+			&.disabled {
+				& > div.pseudo, & > div.text {
+					font-style:italic;
+					color:darken(@background-color, 32%);
+					.noselect();
+				}
+			}
+
+			&.clickable {
+				cursor:pointer;
+				&:hover {
+					outline-color:#F3A098;
+					& > div.pseudo, & > div.text {
+						color:#F3A098;
+					}
+				}
+			}
+		}
+	}
+
+	div#emptyblock {
+		position:absolute;
+		width:100%;
+		height:0;
+		bottom:0;
+
+		div.tooltipInfo {
+			.noselect();
+
+			position:relative;
+			background:rgba(0,0,0,0.8);
+			margin:0 auto;
+			margin-bottom:2px;
+			overflow:hidden;
+			color:white;
+			padding:5px;
+			border-radius:5px;
+			max-width:80%;
+			cursor:pointer;
+			right:0;
+			left:0;
+			opacity:0.9846866;
+			z-index:1001;
+
+			&:hover {
+				opacity:0.92;
+			}
+
+			p {
+				display:inline-block;
+				margin:0;
+			}
+		}
+	}
+
+	div.overlay {
+		position:absolute;
+		background:rgba(0, 0, 0, 0.1);
+		z-index:1000;
+		height:100%;
+		width:100%;
+		left:0;
+		top:0;
+
+		div.form {
+			background:darken(@background-color, 4%);
+			border-radius:6px;
+			position:absolute;
+			padding:15px 0;
+			height:116px;
+			width:380px;
+			margin:auto;
+			bottom:0;
+			right:0;
+			left:0;
+			top:0;
+
+			color:darken(@background-color, 50%);
+			input {
+				color:darken(@background-color, 50%);
+			}
+
+			&#overrefuse p {
+				.colortheorem(0);
+			}
+
+			p {
+				width:340px;
+				margin:auto;
+				.colortheorem(1);
+				white-space:pre-line;
+			}
+
+			a.link {
+				display:block;
+				text-align:center;
+			}
+
+			img {
+				display:block;
+				margin:8px auto;
+
+				&.preview {
+					max-height:50px;
+					max-width:50px;
+
+					.noselect();
+				}
+			}
+
+			textarea {
+				display:block;
+				margin:8px auto;
+				width:300px;
+				height:50px;
+				resize:none;
+
+				&.preview {
+					font-size:9px;
+				}
+			}
+
+			div.trois {
+				width:33%;
+				display:inline-block;
+			}
+
+			div.line {
+				border:1px solid darken(@background-color, 8%);
+				border-radius:4px;
+				width:340px;
+				height:30px;
+				margin:auto;
+				margin-bottom:10px;
+				label {
+					background:@background-color;
+					border-right:1px solid darken(@background-color, 8%);
+					border-radius:4px 0 0 4px;
+					display:inline-block;
+					text-align:right;
+					line-height:30px;
+					overflow:hidden;
+					padding:0 10px;
+					cursor:pointer;
+					height:30px;
+					width:90px;
+					float:left;
+					.noselect();
+				}
+
+				input {
+					border-radius:0 4px 4px 0;
+					background:#F8F9F9;
+					line-height:28px;
+					border:1px solid #F8F9F9;
+					padding:0 10px;
+					outline:none;
+					height:28px;
+					width:207px;
+
+					&:focus {
+						border:1px dotted #F3A098;
+					}
+				}
+
+				&:hover, &:hover label {
+					border-color:darken(@background-color, 16%);
+				}
+
+				&#overlog_pseudo {
+					&, input {
+						.colortheorem(0);
+					}
+				}
+
+				&#overlog_pwd {
+					&, input {
+						.colortheorem(1);
+					}
+				}
+
+				&#overrefuse_salon {
+					&, input {
+						.colortheorem(2);
+					}
+				}
+
+				label:has(input:focus) { color: red !important; }
+			}
+
+			input[type="button"] {
+				font-family:"Roboto", sans-serif;
+				background:@background-color;
+				border-radius:4px;
+				border:1px solid darken(@background-color, 8%);
+				.colortheorem(8);
+				line-height:30px;
+				padding:0 30px;
+				font-size:14px;
+				cursor:pointer;
+				display:block;
+				margin:auto;
+				outline:none;
+				&:hover {
+					outline:none;
+				}
+				&:active {
+					background:darken(@background-color, 4%);
+				}
+				&:focus {
+					border:1px dotted #F3A098;
+				}
+				&::-moz-focus-inner {
+					border: 0;
+				}
+			}
+		}
+	}
+
+	/* Quand le chat n'est pas encore chargé. */
+	&.normal {
+		width:650px;
+		height:464px; /* 29px * 16 */
+		//div#messages_chat { height:29px * 16; }
+		//p > div.text { width:530px; }
+	}
+}
+/* Fin du CSS sur le chat */
+
+div#drag-overlay {
+	background:rgba(0,0,0,0.72);
+	display:none;
+	height:100%;
+	left:0;
+	position:fixed;
+	top:0;
+	width:100%;
+	z-index:9999;
+
+	div {
+		border:3px dashed #999;
+		bottom:0;
+		display:block;
+		height:90%;
+		left:0;
+		margin:auto;
+		position:fixed;
+		right:0;
+		top:0;
+		width:90%;
+	}
+
+	h1 {
+		color:white;
+		font-size:72px;
+		margin-left:-124px;
+		text-align:center;
+		position:absolute;
+		left:50%;
+		top:40%;
+	}
+}
+
+div#footer {
+	margin:auto;
+	text-align:center;
+}

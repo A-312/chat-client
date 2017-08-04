@@ -1,0 +1,65 @@
+Deny from all
+
+Options -Indexes
+AddDefaultCharset UTF-8
+
+AddType text/less .less
+
+#POUR LES ERREURS :
+#ErrorDocument 400 /?e=400
+#ErrorDocument 401 /?e=401
+#ErrorDocument 402 /?e=402
+#ErrorDocument 403 /?e=403
+#ErrorDocument 404 /?e=404
+#ErrorDocument 405 /?e=405
+#ErrorDocument 500 /?e=500
+#ErrorDocument 501 /?e=501
+#ErrorDocument 502 /?e=502
+#ErrorDocument 503 /?e=503
+#ErrorDocument 504 /?e=504
+#ErrorDocument 505 /?e=505
+
+#RewriteEngine on
+#RewriteCond %{HTTP_HOST} !^chat\.
+#RewriteRule ^(.*)$ http://chat.12z.fr/ [R=301,L]
+
+<IfModule mod_expires.c>
+	ExpiresActive On
+	ExpiresDefault "access plus 1 seconds"
+
+#	ExpiresByType image/x-icon "access plus 2692000 seconds"
+#	ExpiresByType image/jpeg "access plus 2692000 seconds"
+#	ExpiresByType image/png "access plus 2692000 seconds"
+#	ExpiresByType image/gif "access plus 2692000 seconds"
+#	ExpiresByType application/x-shockwave-flash "access plus 2692000 seconds"
+#	ExpiresByType text/css "access plus 2692000 seconds"
+#	ExpiresByType text/javascript "access plus 2692000 seconds"
+#	ExpiresByType application/x-javascript "access plus 2692000 seconds"
+#	ExpiresByType text/html "access plus 600 seconds"
+#	ExpiresByType application/xhtml+xml "access plus 600 seconds"
+
+	ExpiresByType audio/ogg "access plus 2692000 seconds"
+	ExpiresByType audio/mpeg "access plus 2692000 seconds"
+	ExpiresByType image/svg+xml "access plus 2692000 seconds"
+	ExpiresByType application/x-font-ttf "access plus 2692000 seconds"
+	ExpiresByType application/x-font-woff "access plus 2692000 seconds"
+	ExpiresByType application/vnd.ms-fontobject "access plus 2692000 seconds"
+</IfModule>
+
+<IfModule mod_headers.c>
+	<IfModule mod_deflate.c>
+		SetOutputFilter DEFLATE
+	</IfModule>
+
+	<FilesMatch "\\.(ogg|mp3|woff|ttf|svg|eot)$">
+		Header set Cache-Control "max-age=2692000, public"
+	</FilesMatch>
+</IfModule>
+
+#	<FilesMatch "\\.(ico|jpe?g|png|gif|swf|css|js)$">
+#		Header set Cache-Control "max-age=2692000, public"
+#	</FilesMatch>
+#	<FilesMatch "\\.(x?html?|php)$">
+#		Header set Cache-Control "max-age=600, private, must-revalidate"
+#	</FilesMatch>
+#</IfModule>
