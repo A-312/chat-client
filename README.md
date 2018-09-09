@@ -1,5 +1,5 @@
 # chat-client
-Une interface js pour un chat
+Une interface js pour un chat. Vous trouverez le serveur ici : https://github.com/A-312/chat-server
 
 ![](https://i.imgur.com/Wg7jfDu.png)
 
