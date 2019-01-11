@@ -1,6 +1,8 @@
 # chat-client
 Une interface js pour un chat. Vous trouverez le serveur ici : https://github.com/A-312/chat-server
 
+![gif](https://user-images.githubusercontent.com/18501150/45268390-b37b9d00-b47b-11e8-9b17-24a580e93d3e.gif)
+
 ![image](https://user-images.githubusercontent.com/18501150/51002961-4107f000-1535-11e9-9d95-91a617557c22.png)
 
 ![image](https://user-images.githubusercontent.com/18501150/51002056-61827b00-1532-11e9-90a9-dc14b467aa16.png)
@@ -27,8 +29,3 @@ Une interface js pour un chat. Vous trouverez le serveur ici : https://github.co
 
 ![image](https://user-images.githubusercontent.com/18501150/51002762-a1e2f880-1534-11e9-9e86-67d8e0a774b0.png)
 
-![](https://i.imgur.com/Wg7jfDu.png)
-
-(Screen de la version WebIRC pour twitch).
-
-![](https://user-images.githubusercontent.com/18501150/45268390-b37b9d00-b47b-11e8-9b17-24a580e93d3e.gif)
